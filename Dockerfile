@@ -34,8 +34,5 @@ RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install
     && cp ../config-${LINUX_CONFIG_VERSION}-grsec .config \
     && make olddefconfig \
     && make -j "$(nproc)" deb-pkg \
-    && mkdir /root/linux-${LINUX_VERSION}-grsec \
-    && mv /tmp/*.deb /root/linux-${LINUX_VERSION}-grsec/ \
-    && apt-get purge -y build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev \
-    && apt-get autoremove --purge -y && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/*
+    && mkdir /root/linux-kernel \
+    && mv /tmp/*.deb /root/linux-kernel/
