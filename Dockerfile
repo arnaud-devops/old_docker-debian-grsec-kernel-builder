@@ -9,7 +9,7 @@ ARG GPG_GRSEC="DE94 52CE 46F4 2094 907F  108B 44D1 C0F8 2525 FE49"
 
 COPY config-${LINUX_CONFIG_VERSION}-grsec /tmp/
 
-RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends --no-install-suggests build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev \
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends --no-install-suggests build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev libncurses5-dev \
     && cd /tmp \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.xz \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.sign \
