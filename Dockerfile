@@ -1,7 +1,7 @@
 FROM debian:sid
 
-ARG LINUX_VERSION=4.9.9
-ARG GRSEC_VERSION=3.1-4.9.9-201702122044
+ARG LINUX_VERSION=4.9.11
+ARG GRSEC_VERSION=3.1-4.9.11-201702181444
 ARG LINUX_CONFIG_VERSION=4.9.8
 
 ARG GPG_LINUX="647F 2865 4894 E3BD 4571  99BE 38DB BDC8 6092 693E"
@@ -16,9 +16,10 @@ RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.sign \
     && wget -q https://grsecurity.net/test/grsecurity-${GRSEC_VERSION}.patch \
     && wget -q https://grsecurity.net/test/grsecurity-${GRSEC_VERSION}.patch.sig \
+    && wget -q https://grsecurity.net/spender-gpg-key.asc \
     && unxz linux-${LINUX_VERSION}.tar.xz \
-    && gpg --recv-keys 0x44D1C0F82525FE49 \
-    && gpg --recv-keys 0x38DBBDC86092693E \
+    && gpg --import spender-gpg-key.asc \
+    && gpg --keyserver hkp://keys.gnupg.net --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E \
     && FINGERPRINT_LINUX="$(LANG=C gpg --verify linux-${LINUX_VERSION}.tar.sign linux-${LINUX_VERSION}.tar 2>&1 \
     | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
     && if [ -z "${FINGERPRINT_LINUX}" ]; then echo "linux-${LINUX_VERSION}.tar: Warning! Invalid GPG signature!" && exit 1; fi \
