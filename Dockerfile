@@ -10,7 +10,7 @@ ARG GPG_GRSEC="DE94 52CE 46F4 2094 907F  108B 44D1 C0F8 2525 FE49"
 COPY config-${LINUX_CONFIG_VERSION}-grsec /tmp/
 COPY change-default-console-loglevel.patch /tmp/
 
-RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends --no-install-suggests build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev libncurses5-dev \
+RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends --no-install-suggests build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev \
     && cd /tmp \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.xz \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.sign \
@@ -38,4 +38,7 @@ RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install
     && make olddefconfig \
     && make -j "$(nproc)" deb-pkg \
     && mkdir /root/linux-kernel \
-    && mv /tmp/*.deb /root/linux-kernel/
+    && mv /tmp/*.deb /root/linux-kernel/ \
+    && apt-get purge -y build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev \
+    && apt-get autoremove --purge -y && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/*
