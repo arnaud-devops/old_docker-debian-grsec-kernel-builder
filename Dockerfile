@@ -1,7 +1,7 @@
 FROM debian:sid
 
-ARG LINUX_VERSION=4.9.11
-ARG GRSEC_VERSION=3.1-4.9.11-201702181444
+ARG LINUX_VERSION=4.9.12
+ARG GRSEC_VERSION=3.1-4.9.12-201702231830
 ARG LINUX_CONFIG_VERSION=4.9.8
 
 ARG GPG_LINUX="647F 2865 4894 E3BD 4571  99BE 38DB BDC8 6092 693E"
@@ -10,7 +10,9 @@ ARG GPG_GRSEC="DE94 52CE 46F4 2094 907F  108B 44D1 C0F8 2525 FE49"
 COPY config-${LINUX_CONFIG_VERSION}-grsec /tmp/
 COPY change-default-console-loglevel.patch /tmp/
 
-RUN apt-get update && apt-get -y dist-upgrade && apt-get install -y --no-install-recommends --no-install-suggests build-essential gpg wget dirmngr ca-certificates bc exuberant-ctags libssl-dev \
+RUN apt-get update \
+    && apt-get -y dist-upgrade \
+    && apt-get install -y --no-install-recommends --no-install-suggests build-essential wget gpg dirmngr ca-certificates bc exuberant-ctags libssl-dev \
     && cd /tmp \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.xz \
     && wget -q https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${LINUX_VERSION}.tar.sign \
